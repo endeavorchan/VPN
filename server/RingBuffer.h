@@ -7,12 +7,15 @@
 
 #ifndef _RINGBUFFER_H
 
-namespace lib {
+namespace lib
+{
 
 template<typename T, int QUEUESIZE>
-class RingBuffer {
+class RingBuffer 
+{
 
 public:
+    ~RingBuffer();
 
 protected:
 
@@ -37,10 +40,26 @@ private:
 
 RingBuffer::RingBuffer()
 {
+    m_Head = 0;
+    m_Tail = 0;
+    m_Full = false;
+    m_Empty = true;
+    
+    pthread_mutex_init(&m_Lock, nullptr);
 
+    pthread_cond_init(&m_NotFull, nullptr);
+    pthread_cond_init(&m_NotEmpty, nullptr);
 }
 
+RingBuffer::~RingBuffer()
+{
+    pthread_mutex_destroy(&m_Lock);
+
+    pthread_cond_destroy(&m_NotEmpty);
+    pthread_cond_destroy(&m_NotFull);
 }
+
+} // namespace lib
 
 #define _RINGBUFFER_H
 #endif
