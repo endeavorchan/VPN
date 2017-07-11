@@ -59,6 +59,11 @@ RingBuffer::~RingBuffer()
     pthread_cond_destroy(&m_NotFull);
 }
 
+void Produce(T &val)
+{
+    pthread_mutex_lock(_lock);
+}
+
 } // namespace lib
 
 #define _RINGBUFFER_H
