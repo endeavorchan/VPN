@@ -1,5 +1,6 @@
 #pragma once
 
+using namespace lib;
 template<typename T, size_t BufSize>
 RingBufferNoLock<T, BufSize>::RingBufferNoLock()
 {

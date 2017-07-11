@@ -7,8 +7,8 @@
 
 #pragma once
 
-//namespace lib
-//{
+namespace lib
+{
 
 template<typename T, size_t BufSize>
 class RingBufferNoLock
@@ -57,5 +57,5 @@ private:
     RingBuffer& operator =(const RingBuffer&) = delete;
 };
 
-//} // namespace lib
+} // namespace lib
 

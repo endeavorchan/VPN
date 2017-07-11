@@ -9,7 +9,7 @@
 
 int main()
 {
-    RingBuffer<int, 20> buf;
+    lib::RingBuffer<int, 20> buf;
     
 }
 
