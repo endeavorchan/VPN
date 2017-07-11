@@ -10,35 +10,39 @@
 namespace lib
 {
 
-template<typename T, int QUEUESIZE>
-class RingBuffer 
+template<typename T, size_t BufSize>
+class RingBufferNoLock
 {
-
 public:
-    ~RingBuffer();
+    RingBufferNoLock();
 
-protected:
+    void push(const T& val) const;
+    T pop();
+
+    virtual ~RingBufferNoLock();
 
 private:
-    T m_Buffer[QUEUESIZE];
-
+    T m_Buffer[BufSize];
     int m_Head, m_Tail;
     bool m_Full, m_Empty;
+};
 
-    pthread_mutex_t m_Lock;
-    pthread_cond_t m_NotFull, m_NotEmpty;  
-
-    // User can only call init function to create RingBuffer
-    //
+template<typename T, size_t BufSize>
+class RingBuffer : RingBufferNoLock<T, BufSize> 
+{
+public:
     RingBuffer();
+    ~RingBuffer();
+
+private:
+    std::mutex m_Lock;
+    std::condition_variable m_NotFull, m_NotEmpty;  
 
     // Disable compiler-generated members
     //
     RingBuffer(const RingBuffer&) = delete;
     RingBuffer& operator =(const RingBuffer&) = delete;
 };
-
-
 
 } // namespace lib
 
