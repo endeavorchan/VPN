@@ -1,1 +1,0 @@
-We can use the new std::mutex, std::condition_variable in C++11 to do the task. I just want to implement the mutex lock myself
