@@ -46,12 +46,8 @@ T RingBufferNoLock<T, BufSize>::pop()
 }
 
 template<typename T, size_t BufSize>
-RingBuffer<T, BufSize>::RingBuffer()
+RingBuffer<T, BufSize>::RingBuffer():RingBufferNoLock<T, BufSize>()
 {
-    m_Head = 0;
-    m_Tail = 0;
-    m_Full = false;
-    m_Empty = true;
 }
 
 template<typename T, size_t BufSize>
@@ -60,12 +56,12 @@ RingBuffer<T, BufSize>::~RingBuffer()
 }
 
 template<typename T, size_t BufSize>
-void RingBuffer<T, BufSize>::Produce(T &val)
+void RingBuffer<T, BufSize>::Produce(const T &val)
 {
     std::unique_lock<std::mutex> ulock(m_Lock);
-    while (m_Full)
+    while (this->isFull())
     {
-        m_NotFull.wait();
+        m_NotFull.wait(ulock);
     }
     push(val);
     m_NotEmpty.notify_one();
@@ -75,12 +71,12 @@ template<typename T, size_t BufSize>
 T RingBuffer<T, BufSize>::Consume()
 {
     std::unique_lock<std::mutex> ulock(m_Lock);
-    while (m_Empty)
+    while (this->isEmpty())
     {
-        m_NotEmpty.wait();
+        m_NotEmpty.wait(ulock);
     }
 
-    T ret = pop();
+    T ret = this->pop();
     m_NotFull.notify_one();
     return ret;
 }

@@ -7,8 +7,8 @@
 
 #pragma once
 
-namespace lib
-{
+//namespace lib
+//{
 
 template<typename T, size_t BufSize>
 class RingBufferNoLock
@@ -16,10 +16,20 @@ class RingBufferNoLock
 public:
     RingBufferNoLock();
 
-    void push(const T& val) const;
+    void push(const T& val);
     T pop();
 
-    virtual ~RingBufferNoLock();
+    bool isFull()
+    {
+        return m_Full;
+    }
+
+    bool isEmpty()
+    {
+        return m_Empty;
+    }
+
+    virtual ~RingBufferNoLock(){}
 
 private:
     T m_Buffer[BufSize];
@@ -34,6 +44,9 @@ public:
     RingBuffer();
     ~RingBuffer();
 
+    void Produce(const T &val);
+    T Consume();
+
 private:
     std::mutex m_Lock;
     std::condition_variable m_NotFull, m_NotEmpty;  
@@ -44,5 +57,5 @@ private:
     RingBuffer& operator =(const RingBuffer&) = delete;
 };
 
-} // namespace lib
+//} // namespace lib
 
