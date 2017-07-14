@@ -17,9 +17,10 @@
 
 // Linux network header
 
-// My own header
+// my own header
 #include "RingBuffer.h"
-#include "server.h"
-
-// Inline functions
 #include "RingBuffer.inl"
+
+#include "address.h"
+#include "socketevent.h"
+#include "server.h"
