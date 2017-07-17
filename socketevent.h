@@ -36,6 +36,8 @@ struct SockEvent
         int downstreamsock;
     } u;
 
+    int selfstreamsock;
+
     std::vector<Buffer *> *send_buffer;
     std::vector<Buffer *> recv_buffer; 
 };

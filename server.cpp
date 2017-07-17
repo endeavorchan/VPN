@@ -23,8 +23,32 @@ Server::Server(const char* hostname, int port)::m_addr(hostname, port)
     // listen
 }
 
-Server::EventLoop()
+void Server::ConfigureEpoll(int epollFd, SockEvent* sockevent, int op, struct epoll_event* pev)
 {
+    int r = epoll_ctl(epollFd, op, sockevent->selfstreamsock, pev);
+    if (r != 0)
+    {
+        // report error
+    }
+}
+
+void Server::RegisterEpollEvent(int epollFd, SockEvent* sockevent, struct epoll_event *pev)
+{
+    pev->data.ptr = sockevent;
+    ConfigureEpoll(epollFd, sockevent, EPOLL_CTL_ADD, pev);
+}
+
+void Server::InitSockEvent(SockEvent* sockevent, SockState state, SockRole role, int sockfd)
+{
+    sockevent->state = state;
+    sockevent->role = role;
+    sockevent->selfstreamsock = sockfd;
+    sockevent->send_buffer = nullptr; 
+}
+
+void Server::EventLoop()
+{
+    int efd = epoll_create(1);    
 
 }
 

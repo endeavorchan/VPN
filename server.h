@@ -17,6 +17,10 @@ public:
 
     void EventLoop();
 
+    void ConfigureEpoll(int, SockEvent*, int, struct epoll_event*);
+    void RegisterEpollEvent(int, SockEvent*, struct epoll_event);
+    void InitSockEvent(SockEvent* sockevent, SockState state, SockRole roke, int sockfd);
+
 private:
 
     int m_listenfd;
