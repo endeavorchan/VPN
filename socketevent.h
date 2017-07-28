@@ -17,7 +17,8 @@ enum SockState
 enum SockRole
 {
     SockDownStream = 1,
-    SockUpStream
+    SockUpStream,
+    SockServerStream
 };
 
 struct Buffer
